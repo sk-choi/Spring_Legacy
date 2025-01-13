@@ -8,6 +8,7 @@ import java.util.*;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Repository;
 @Repository //DAO에만 붙인다.
 public class BoardDAO {
 	@Autowired
-	DataSource ds;
+	//DataSource ds;
+	BasicDataSource ds;
 	
 	ArrayList<MyBoardVO> alist = new ArrayList<MyBoardVO>();
 	
@@ -57,9 +59,14 @@ public class BoardDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-//		finally {
-//			System.out.println("TODO...dbcp close()......");
-//		}
+		finally {
+			//원칙상 DBCP를 사용하는 datasource는 별도로 close()하지 않는다.
+			try {
+				ds.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		//o.Close(conn, pstmt, rs);
 		System.out.println("--내부 select * done--");
 		return alist;
@@ -107,6 +114,13 @@ public class BoardDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			//원칙상 DBCP를 사용하는 datasource는 별도로 close()하지 않는다.
+			try {
+				ds.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		System.out.println("--내부 select * done--");
 		return alist;
