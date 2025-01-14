@@ -15,7 +15,7 @@
 	<context:component-scan base-package="com.spring" />
 	<context:component-scan base-package="com.lec" />
 	<context:component-scan base-package="com.sb.common" />
-	<mvc:annotation-driven />
+	<mvc:annotation-driven /> <!-- annotation 기반 -->
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<mvc:resources mapping="/sb/resources/**" location="/sb/resources/" />

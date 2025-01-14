@@ -130,6 +130,25 @@
 		</dependency>
 		<!-- io는 스프링이 기본으로 가지고 있음 common loging에 통합 -->
 		
+		<!--  AOP 4.3.16 RELEASE ... context webmvc 모듈 설치시 같이 설치됨-->	
+		<!-- AspectJ : v1.8.13 -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>	
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		<!-- cglib -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
+		</dependency>
+		
 		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
