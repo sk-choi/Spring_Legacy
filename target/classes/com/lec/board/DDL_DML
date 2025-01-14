@@ -1,0 +1,65 @@
+drop table myreply;
+drop table myboard;
+
+
+create table myboard (
+bseq number primary key,
+title varchar2(60) not null,
+contents varchar2(100),
+regid varchar2(20) default 'guest',
+regdate date default sysdate
+);
+
+create table myreply (
+rseq number primary key,
+reply  varchar2(60) not null,
+regid varchar2(20) default 'guest',
+regdate date default sysdate,
+bseq number, 
+CONSTRAINT myreply_fk FOREIGN KEY (bseq) REFERENCES myboard(bseq)
+);
+
+create sequence seq_myreply start with 1 increment by 1 nocache;
+create sequence seq_myboard start with 1 increment by 1 nocache;
+
+-- -----------------------------------------------------------
+select * from myboard order by regdate desc;
+
+insert into myboard(bseq, title, contents, regid,  regdate)
+values(seq_myboard.nextval, 'c','c','c',sysdate);
+
+insert into myboard(bseq, title, contents, regid)
+values(seq_myboard.nextval, 'd','d','d');
+
+select * from myboard where bseq=1;
+
+update myboard set title='a' , contents = 'a' where bseq=1;
+
+delete from myboard where bseq=1;
+
+-- ----------------------------------------------------
+
+select * from myreply where bseq=1 order by rseq asc;
+
+insert into myreply(rseq, reply, regid, bseq)
+values(seq_myreply.nextval, 'ccc','ccc',2);
+
+delete from myreply where rseq=3;
+-- ----------------------------------------------------
+
+commit;
+
+
+
+-- ----------------------------------------------------
+
+select b.bseq, b.title, r.rseq, r.reply
+from myboard b, myreply r
+where b.bseq = r.bseq(+)
+order by b.bseq asc, r.rseq asc;
+
+
+
+
+
+
