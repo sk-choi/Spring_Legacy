@@ -25,7 +25,7 @@ public class BoardDAO {
 //	PreparedStatement pstmt = null; //sql 점검
 //	ResultSet rs = null; //결과 출력
 	
-	public ArrayList<MyBoardVO> select() {
+	public ArrayList<MyBoardVO> select() { 
 		Connection conn = null;
 		PreparedStatement pstmt = null; //sql 점검
 		ResultSet rs = null; //결과 출력
