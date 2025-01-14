@@ -61,7 +61,7 @@
 	</aop:config>
 	
 	<!-- CGLIB프록시 방식 : 인터페이스를 구현하지 않은 클래스에도 AOP 적용 별도lib 추가 설치 : cglib.jar
-	<aop:aspectj-autoproxy proxy-target-class="true"/>-->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>--> 
 	
 	<!-- ↑이걸 제외한 모든 파일은 컨테이너에서 처리 -->
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
