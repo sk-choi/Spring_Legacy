@@ -39,57 +39,19 @@
         </property>
     </bean>
 	
-	<!-- MYBATIS SqlSessionFactory , SqlSessionTemplate(datasource에서 가져온 session 관리) 
-			SqlSessionFactory : datasource, mapper(sql) 
-			SqlSessionTemplate - select(), insert()
-	-->
-	<bean id="ID_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<!-- MYBATIS SqlSessionFactory , SqlSessionTemplate(datasource에서 가져온 session 관리) -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="MY_tomcat_ds_CONSOL_PRINT" /> 
-		<property name="mapperLocations" value="classpath*:mapper/*-mapper.xml" />
-		<property name="configLocation" value="classpath:mybatis-config.xml" />
 		<!-- <property name="dataSource" ref="MY_tomcat_ds" /> 
-		<property name="mapperLocations" value="classpath:lec09-mappers/*-mapper.xml" />
+		<property name="mapperLocations" value="classpath:lec09-mappers/*-map.xml" />
 	 	<property name="configLocation"  value="classpath:lec09-mappers/mybatis-context.xml"/> 
 	 	-->
 	</bean> 
-	<!-- 매퍼를 인터페이스화 한 형태 
-		: 특정 인터페이스를 
-	public interface UserMapper {
-		@Select("SELECT * FROM users WHERE id = #{userId}") User getUser(@Param("userId") String userId);
-	}
-	-->
-	<!--  
-	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.lec.tx.BoardMapper" /> 
-		<property name="sqlSessionFactory" ref="ID_sqlSessionFactory" />
-	</bean>
-	-->
-	 
-	 <!-- 매퍼를 인터페이스화한 형태 
-			: 인터페이스들이 들어가 있는 패키지명을 지목해서 설정 -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.lec.tx.mapper" />
-	</bean>
-	
-	
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"> 
-		<constructor-arg index="0" ref="ID_sqlSessionFactory" />
+		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 	
-	<!-- 매퍼를 인터페이스화 한 형태 : 특정 인터페이스를 정확히 지목해서 설정
-		 	: 인터페이스1개 == property설정1개
-	public interface UserMapper {
-		@Select("SELECT * FROM users WHERE id = #{userId}") User getUser(@Param("userId") String userId);
-	}
-	-->
-	<!--  
-	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.lec.tx.BoardMapper" /> 
-		<property name="sqlSessionFactory" ref="ID_sqlSessionFactory" />
-	</bean>
-	-->
-	<!-- CGLIB 방식 : 인터페이스를 구현하지않은 DAO 클래스에도 AOP 적용
-		 별도lib 추가 설치 : cglib.jar  -->
+	<!-- CGLIB 방식  -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	
 	<!-- JDBC 관리 트랜잭션 매니저 설정 

@@ -3,12 +3,14 @@
  */
 package com.lec.tx;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,24 +38,64 @@ public class TxController {
 	public String ctlList(Model model) {
 		//BoardDAO bdao = new BoardDAO();
 	
-		ArrayList<MyBoardVO> blist = svc.svcSelect();
+		List<MyBoardVO> blist = svc.svcSelect();
 		model.addAttribute("MY_KEY_BLIST", blist);
 		
 		return "tx/board_list";
 	}
 	
+//	@RequestMapping(value = "/binsert", method = RequestMethod.POST)
+//	public String ctlInsert(
+//			@RequestParam("title") String vtitle,
+//			@RequestParam("contents") String vcontents,
+//			@RequestParam("regid") String vregid
+//			) {	
+//		MyBoardVO bvo = new MyBoardVO();
+//		bvo.setTitle(vtitle);
+//		bvo.setContents(vcontents);
+//		bvo.setRegid(vregid);
+//		svc.svcInsert(bvo);
+//		
+//		
+//		return "redirect:/blist";
+//	}
+//	
 	@RequestMapping(value = "/binsert", method = RequestMethod.POST)
 	public String ctlInsert(
-			@RequestParam("title") String vtitle,
-			@RequestParam("contents") String vcontents,
-			@RequestParam("regid") String vregid
+			@ModelAttribute MyBoardVO bvo
+			) {	
+		svc.svcInsert(bvo);
+		return "redirect:/blist";
+	}
+	
+	
+	
+	@RequestMapping(value = "/bdetail", method = RequestMethod.GET)
+	public String ctlDetail(Model model, @RequestParam("bseq") int vbseq) {
+		
+		MyBoardVO bvo = svc.svcDetail(vbseq);
+		System.out.println(bvo.toString());
+		model.addAttribute("MY_KEY_BVO", bvo);
+		
+		return "tx/board_detail";
+	}
+	
+	@RequestMapping(value = "/bupdate", method = RequestMethod.POST)
+	public String ctlUpdate(
+			@ModelAttribute MyBoardVO bvo
 			) {
 		
-		MyBoardVO bvo = new MyBoardVO();
-		bvo.setTitle(vtitle);
-		bvo.setContents(vcontents);
-		bvo.setRegid(vregid);
-		svc.svcInsert(bvo);
+		svc.svcUpdate(bvo);
+		
+		
+		return "redirect:/bdetail?bseq=" + bvo.getBseq();
+	}
+	
+	@RequestMapping(value = "/bdelete", method = RequestMethod.POST)
+	public String ctlDelete(
+			@RequestParam("bseq") int bseq
+			) {
+		svc.svcDelete(bseq);
 		
 		
 		return "redirect:/blist";

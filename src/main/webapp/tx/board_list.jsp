@@ -28,7 +28,7 @@
         <tr>
             <td>${bvo.bseq}</td>
             <td>
-            	<a href="#">${bvo.title}</a>
+            	<a href="/bdetail?bseq=${bvo.bseq}">${bvo.title}</a>
             </td>
             <td>${bvo.regid}</td>
             <td>${bvo.regdate}</td>

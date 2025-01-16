@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- <mapper namespace=boardspace> -->
+<!-- 매퍼(1) : 인터페이스(1) 매핑 -->
+<mapper namespace="com.lec.tx.mapper.BoardMapper"> <!-- 주민번호 급 ㄷㄷ namespace 안의 id 겹치면 안됨 다른 namespace면 상관무 -->
+ 	
+ 	<!-- boardspace.boardDetail -->
+ 	<select id="boardDetail" parameterType="int" resultType="com.lec.tx.MyBoardVO">
+ 		select * from myboard where bseq = #{bseq}
+ 	</select>
+ 	
+ 	<!-- boardspace.boardList -->
+ 	<select id="boardList" resultType="com.lec.tx.MyBoardVO">
+ 		select * from myboard order by bseq desc
+ 	</select>
+ 	
+ 	<!-- boardspace.boardInsert -->
+ 	<insert id="boardInsert" parameterType="com.lec.tx.MyBoardVO">
+ 		insert into myboard(bseq, title, contents, regid, regdate) values(seq_myboard.nextval, #{title}, #{contents}, #{regid}, sysdate)
+ 	</insert>
+ 	
+ 	<!-- boardspace.boardUpdate -->
+ 	<update id="boardUpdate" parameterType="com.lec.tx.MyBoardVO">
+ 		update myboard SET title = #{title}, contents = #{contents} WHERE bseq = #{bseq}
+ 	</update>
+ 	
+ 	<!-- boardspace.boardDelete -->
+ 	<delete id="boardDelete" parameterType="int">
+ 		delete from myboard where bseq = #{bseq}
+ 	</delete>
+ 
+</mapper>

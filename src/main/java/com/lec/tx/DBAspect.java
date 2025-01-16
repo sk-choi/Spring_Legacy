@@ -27,15 +27,15 @@ public class DBAspect {
 	@Before("dummyDAOCut()")
 	public void dbConn() {
 		int acnt = ds.getNumActive(); // 실행 중인 커넥션 수 //1
-		int icnt = ds.getMaxIdle(); // 반납된 커넥션 수
+		int icnt = ds.getMaxIdle(); // 반납된 커넥션 수 //0
 	
 		System.out.printf("실행전 -- 커넥션 가져오기 {}, {}", acnt, icnt);
 	}
 	
 	@After("dummyDAOCut()")
 	public void dbClose() {
-		int acnt = ds.getNumActive(); // 실행 중인 커넥션 수
-		int icnt = ds.getMaxIdle(); // 반납된 커넥션 수
+		int acnt = ds.getNumActive(); // 실행 중인 커넥션 수 //0
+		int icnt = ds.getMaxIdle(); // 반납된 커넥션 수 //1
 		
 		System.out.printf("실행후 무조건 -- 커넥션 반납 {} , {}", acnt, icnt);
 	}
