@@ -1,5 +1,8 @@
 package com.lec.tx;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +20,8 @@ public class MyBoardVO {
 	private String contents;
 	private String regid;
 	private String regdate;
-
+	
+	private List<MyreplyVO> rlist;
 	//MyBoardVO(String bseq, String contents, String regid, String regdate){}
 	
 	

@@ -10,4 +10,8 @@ public interface TxService {
 	public void svcUpdate(MyBoardVO bvo);
 	public void svcDelete(int bseq);
 	public MyBoardVO svcDetail(int vbseq);
+	
+	public void svcInsertRuntimeErrorFunc(MyBoardVO bvo) throws RuntimeException;
+	public void svcInsertSQLErrorFunc(MyBoardVO bvo) throws SQLException;
+	public void svcTest();
 }

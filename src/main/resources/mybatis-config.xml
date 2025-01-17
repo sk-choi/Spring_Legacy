@@ -3,12 +3,17 @@
  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
+	
+	<!--  oracle null 처리  -->
+    <settings>
+        <setting name="cacheEnabled" value="false" />
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+	
 	<typeAliases>
 		<typeAlias alias="MyBoardVO" type="com.lec.tx.MyBoardVO"/>
 	</typeAliases>
 <!--  
-	*******************************************
 	아래 설정은 스프링으로 옮겨짐
 	*******************************************
 	<environments default="development">

@@ -1,34 +1,112 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?> 
 <!DOCTYPE mapper
- PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
- "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- <mapper namespace=boardspace> -->
-<!-- 매퍼(1) : 인터페이스(1) 매핑 -->
-<mapper namespace="com.lec.tx.mapper.BoardMapper"> <!-- 주민번호 급 ㄷㄷ namespace 안의 id 겹치면 안됨 다른 namespace면 상관무 -->
- 	
- 	<!-- boardspace.boardDetail -->
- 	<select id="boardDetail" parameterType="int" resultType="com.lec.tx.MyBoardVO">
- 		select * from myboard where bseq = #{bseq}
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- <mapper namespace="boardspace">  -->
+
+<!-- 매퍼(1) : 인터페이스(1)  매핑 -->
+<mapper namespace="com.lec.tx.mapper.TestMapper">
+
+	<insert id="insertKeyTest11" parameterType="com.lec.tx.MyBoardVO">
+		<selectKey keyProperty="bseq" resultType="int" order="AFTER"> 
+			select seq_myboard.currval as bseq from dual
+		</selectKey>
+		insert 
+		into myboard(bseq, title, contents, regid, regdate)
+		values(seq_myboard.nextval, #{title} , #{contents}, #{regid}, sysdate)
+	</insert>
+	
+	<insert id="insertKeyTest22"  parameterType="com.lec.tx.MyBoardVO" useGeneratedKeys="true" keyProperty="bseq" keyColumn="bseq"> <!-- 왜 이렇게 해야 하는 걸까요? -->
+		insert 
+		into myboard(bseq, title, contents, regid, regdate)
+		values(seq_myboard.nextval, #{title} , #{contents}, #{regid}, sysdate)
+	</insert>
+	
+	<!-- sql사용 : include 효과 -->
+	<sql id="col">bseq, title </sql>
+	<select id="selectTest33"  resultType="MyBoardVO">
+		select <include refid="col" /> 
+		from myboard
+		where bseq= #{bseq,javaType=int,jdbcType=NUMERIC}
+	</select>
+	
+	<!-- resultMap 내포 : <resultMap> <collection resultMap="ID_otherMap"/> </resultMap> -->
+ 	<resultMap id="boardMap" type="com.lec.tx.MyBoardVO">
+ 		 <id property="bseq" column="bseq" />
+ 		 <result property="title" column="title"/>
+ 		 <result property="contents" column="contents"/>
+ 		 <result property="regid" column="regid"/>
+ 		 <result property="regdate" column="regdate"/>
+ 		 <!-- assocation : 1대 1, collection : 1대 다 -->
+ 		 <!-- <collection property="rlist" ofType="com.lec.tx.MyreplyVO">
+ 		 
+ 		 	<id property="rseq" column="rseq" />
+ 		 	<result property="reply" column="reply"/>
+ 		 
+ 		 </collection>-->
+ 		 <collection property="rlist" resultMap="replyMap"/>
+ 	</resultMap>
+	
+	<resultMap id="replyMap" type="com.lec.tx.MyreplyVO">
+ 		 <id property="rseq" column="rseq" />
+ 		 <result property="reply" column="reply"/>
+ 		 <result property="regid" column="regid"/>
+ 		 <result property="regdate" column="regdate"/>
+ 		 <result property="bseq" column="bseq"/>
+ 	</resultMap> 	
+	
+	<!-- board 상세 + 하단 댓글 목록 -->
+ 	<select id="boardAndReply" parameterType="int" resultMap="boardMap">
+ 		select b.bseq, b.title, b.contents, b.regid, b.regdate,
+			r.rseq, r.reply, r.regid as rregid, r.regdate as rregdate
+			from (select * from myboard where bseq=#{bseq}) b, myreply r where b.bseq = r.bseq
  	</select>
- 	
- 	<!-- boardspace.boardList -->
- 	<select id="boardList" resultType="com.lec.tx.MyBoardVO">
- 		select * from myboard order by bseq desc
- 	</select>
- 	
- 	<!-- boardspace.boardInsert -->
- 	<insert id="boardInsert" parameterType="com.lec.tx.MyBoardVO">
- 		insert into myboard(bseq, title, contents, regid, regdate) values(seq_myboard.nextval, #{title}, #{contents}, #{regid}, sysdate)
- 	</insert>
- 	
- 	<!-- boardspace.boardUpdate -->
- 	<update id="boardUpdate" parameterType="com.lec.tx.MyBoardVO">
- 		update myboard SET title = #{title}, contents = #{contents} WHERE bseq = #{bseq}
- 	</update>
- 	
- 	<!-- boardspace.boardDelete -->
- 	<delete id="boardDelete" parameterType="int">
- 		delete from myboard where bseq = #{bseq}
- 	</delete>
- 
+	
+	
+	<!--  resultMap에 sql 실헹결과를 내포 : <resultMap -->
+	<resultMap id="boardMapBySQL" type="com.lec.tx.MyBoardVO">
+		<id     property="bseq" 	column="bseq" />
+		<result property="title" 	column="title"/>
+		<result property="contents" column="contents"/>
+		<result property="regid" 	column="regid"/>
+		<result property="regdate" 	column="regdate"/>
+		<collection property="rlist" ofType="com.lec.tx.ReplyVO"    select="getRelyByBseq" column="bseq"/>
+	</resultMap>
+	<select id="getRelyByBseq"  resultType="com.lec.tx.MyreplyVO">
+		select rseq, reply, regid
+		from myreply
+		where bseq=#{bseq}
+	</select>
+	
+	
+	<!-- where: 선택적 조건문 -->
+	<select id="boardListBySearch11"     parameterType="map"         resultType="com.lec.tx.MyBoardVO"> 
+		select * from myboard
+		where ${searchGubun} like #{searchStr} order by regdate desc
+	</select>
+	
+	<select id="boardListBySearch22"     parameterType="map"         resultType="com.lec.tx.MyBoardVO"> 
+		select * from myboard 
+		
+		where ${searchGubun} like #{searchStr} order by regdate desc
+		
+		<where> 
+			<if test="searchGubun == title">
+				title like #{searchStr}
+			</if>
+			<if test="searchGubun == regid">
+				regid like #{searchStr}
+			</if>
+		</where>
+		order by regdate desc
+	</select>
+	
+	
+	<!-- Mapper 인터페이스에서만 사용할 수 있는 @Param을 사용해 값을 전달 : parameterType 사용 안함 주의주의 -->
+	<select id="boardListBySearch33"    resultType="com.lec.tx.MyBoardVO">
+		select * from myboard
+		where bseq=#{bseq} or regid = #{regid}
+	</select> 
+	
 </mapper>

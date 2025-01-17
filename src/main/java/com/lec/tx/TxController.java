@@ -2,6 +2,7 @@
  * 
  */
 package com.lec.tx;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,14 @@ public class TxController {
 		return "tx/board_list";
 	}
 	
+	@RequestMapping(value = "/btest", method = RequestMethod.GET)
+	public String ctlTest(Model model) {
+		System.out.println("TxController ctlList 실행 >>> ");
+		svc.svcTest();
+		
+		return "tx/test";
+	}
+	
 //	@RequestMapping(value = "/binsert", method = RequestMethod.POST)
 //	public String ctlInsert(
 //			@RequestParam("title") String vtitle,
@@ -64,7 +73,21 @@ public class TxController {
 	public String ctlInsert(
 			@ModelAttribute MyBoardVO bvo
 			) {	
-		svc.svcInsert(bvo);
+		svc.svcInsert(bvo); //정상작동insert
+		//unchecked exception에는 관여한다.
+//		try {
+//			svc.svcInsertRuntimeErrorFunc(bvo); // 밖에 에러 메세지 출력하지 말라고 try catch 사용
+//		} catch(RuntimeException e) {
+//			System.out.println("txctl RuntimeException catch........");
+//		}
+		
+		//checked exception에는 관여 안한다.
+//		try {
+//			svc.svcInsertSQLErrorFunc(bvo); // 얘는 필수
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			System.out.println("txctl SQLException catch........");
+//		}
 		return "redirect:/blist";
 	}
 	
