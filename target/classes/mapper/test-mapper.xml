@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	</resultMap> 	
 	
 	<!-- board 상세 + 하단 댓글 목록 -->
- 	<select id="boardAndReply" parameterType="int" resultMap="boardMap">
+ 	<select id="boardAndReply" parameterType="int" resultMap="boardMap"> <!-- resultMap인 걸 유의하자! -->
  		select b.bseq, b.title, b.contents, b.regid, b.regdate,
 			r.rseq, r.reply, r.regid as rregid, r.regdate as rregdate
 			from (select * from myboard where bseq=#{bseq}) b, myreply r where b.bseq = r.bseq
@@ -79,6 +79,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where bseq=#{bseq}
 	</select>
 	
+	
+	<select id = "boardListBySQL" resultMap="boardMapBySQL">
+		select * from myboard
+	</select>
 	
 	<!-- where: 선택적 조건문 -->
 	<select id="boardListBySearch11"     parameterType="map"         resultType="com.lec.tx.MyBoardVO"> 
@@ -108,5 +112,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from myboard
 		where bseq=#{bseq} or regid = #{regid}
 	</select> 
+	
+	<select id = "testCdata" resultType="com.lec.tx.MyBoardVO">
+		select * from myboard 
+		where bseq <![CDATA[>]]> 1
+		and bseq <![CDATA[<]]> 10 
+	</select>
 	
 </mapper>

@@ -15,4 +15,6 @@ public interface TestMapper {
 	List<MyBoardVO> boardListBySearch11(Map map);
 	List<MyBoardVO> boardListBySearch22(Map map);
 	List<MyBoardVO> boardListBySearch33(@Param("bseq") int bseq, @Param("regid") String regid);
+	List<MyBoardVO> boardListBySQL();
+	List<MyBoardVO> testCdata();
 }

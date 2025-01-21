@@ -51,10 +51,18 @@ public class TxServiceImpl implements TxService{
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("searchGubun", "regid");
 		map.put("searchStr", "%kim%");
-		List<MyBoardVO> list = tmapper.boardListBySearch11(map);
+		//List<MyBoardVO> list = tmapper.boardListBySearch11(map);
 		
-		//List<MyBoardVO> list = tmapper.boardListBySearch33(5, "kim");
-		System.out.println(list.size());
+//		List<MyBoardVO> list = tmapper.boardListBySearch33(5, "kim");
+//		System.out.println(list.size());
+//		
+//		for(MyreplyVO rvo : list.get(0).getRlist()) {
+//			System.out.println(rvo.getRseq());
+//		}
+		
+		List<MyBoardVO> list = tmapper.testCdata();
+		System.out.println(list.get(0).toString());
+
 	}
 	
 	public void svcInsertRuntimeErrorFunc(MyBoardVO bvo) throws RuntimeException {

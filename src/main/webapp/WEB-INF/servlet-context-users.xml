@@ -14,7 +14,7 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<context:component-scan base-package="com.lec.tx" />
+	<context:component-scan base-package="com.lec.users" />
 	<mvc:annotation-driven />
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<!-- 자바 관련 설정(log4j.xml) 
@@ -67,12 +67,10 @@
 	 
 	 <!-- 매퍼를 인터페이스화한 형태 
 			: 인터페이스들이 들어가 있는 패키지명을 지목해서 설정 -->
-			
-<!-- 			
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.lec.tx.mapper" />
 	</bean>
-	 -->
+	
 	
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"> 
 		<constructor-arg index="0" ref="ID_sqlSessionFactory" />
@@ -113,7 +111,7 @@
 		</tx:attributes>
 	</tx:advice>
 	<aop:config>
-		<aop:pointcut id="ID_cut" expression="execution(public * com.lec.tx.*Impl.*(..))" />
+		<aop:pointcut id="ID_cut" expression="execution(public * com.lec.users.*Impl.*(..))" />
 		<aop:advisor advice-ref="ID_tx_advice" pointcut-ref="ID_cut" />
 	</aop:config>
 	

@@ -17,6 +17,7 @@ public interface BoardMapper {
 	public int boardInsert(MyBoardVO bvo);
 	public int boardUpdate(MyBoardVO bvo);
 	public int boardDelete(int bseq);
+	public List<MyBoardVO> boardListBySQL();
 }
 //-----------------------------------------------
 
